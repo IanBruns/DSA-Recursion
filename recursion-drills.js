@@ -61,30 +61,6 @@ function factorial(n) {
     return n * factorial(n - 1);
 }
 
-function mazeSolve(maze, vertical, horizontal) {
-    // console.log(vertical, horizontal);
-    if (maze[vertical][horizontal] === 'e') {
-        console.log('Done');
-        return;
-    } else if (maze[vertical][horizontal + 1] === ' ' ||
-        maze[vertical][horizontal + 1] === 'e') {
-        console.log('R');
-        mazeSolve(maze, vertical, horizontal + 1);
-    } else if (maze[vertical + 1][horizontal] === ' ' ||
-        maze[vertical + 1][horizontal] === 'e') {
-        console.log('D');
-        mazeSolve(maze, vertical + 1, horizontal);
-    } else if (maze[vertical][horizontal - 1] === ' ' ||
-        maze[vertical][horizontal - 1] === 'e') {
-        console.log('L');
-        mazeSolve(maze, vertical, horizontal + 1);
-    } else if (maze[vertical - 1][horizontal] === ' ' ||
-        maze[vertical - 1][horizontal] === 'e') {
-        console.log('U');
-        mazeSolve(maze, vertical + 1, horizontal);
-    }
-}
-
 function maze(labyrinth, position = 0, row, col, direction = 'S', path = []) {
     if (col < 0 || row < 0) return;
     if (col >= labyrinth[0].length || row >= labyrinth.length) return;
@@ -131,4 +107,26 @@ let bigMaze = [
     [' ', ' ', ' ', ' ', ' ', '*', 'e']
 ];
 
-maze(bigMaze, 0, 0, 0, 'S');
+function anagrams(str) {
+    if (str.lenth === 1) {
+        return str;
+    } else if (str.length === 2) {
+        return [str, reverseString(str)];
+    }
+
+    let totalAnagrams = [];
+
+    for (let i = 0; i < str.length; i++) {
+        let subAnagram = [];
+        //remove everything before and after the selected character
+        subAnagram = subAnagram.concat(anagrams(str.substring(0, i) + str.substring(i + 1)));
+        //take the character and appeand everything after it
+        subAnagram = subAnagram.map(anagram => str.charAt(i) + anagram);
+        //Add it to the total
+        totalAnagrams = subAnagram.concat(totalAnagrams);
+    }
+
+    return totalAnagrams;
+}
+
+console.log(anagrams('east'));
